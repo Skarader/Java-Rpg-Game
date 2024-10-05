@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 import Interfaces.Equippable;
 import Interfaces.Usable;
-import Items.Consumable;
 import Items.Item;
 
 public class Inventory {
@@ -138,13 +137,3 @@ public class Inventory {
 
     }
 }
-
-// public void addEquippedItem(Item item) {
-// if (item instanceof Equippable) {
-// equippedItems.add(item);
-// ((Equippable) item).equipItem();
-// System.out.println(item.getName() + " has been equipped!");
-// } else {
-// System.out.println("This item cannot be equipped!");
-// }
-// }
