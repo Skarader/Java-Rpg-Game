@@ -1,9 +1,8 @@
 package Items.Consumables;
 
-import Interfaces.Usable;
 import Items.Consumable;
 
-public class DefencePotion extends Consumable implements Usable {
+public class DefencePotion extends Consumable {
     private double duration;
 
     public DefencePotion(String name, int weight, int value, int potency, double duration) {

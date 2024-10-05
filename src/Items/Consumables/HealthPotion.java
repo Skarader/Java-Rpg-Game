@@ -1,6 +1,5 @@
 package Items.Consumables;
 
-import Interfaces.Usable;
 import Items.Consumable;
 
 public class HealthPotion extends Consumable {
