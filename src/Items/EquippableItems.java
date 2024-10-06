@@ -20,4 +20,9 @@ public class EquippableItems extends Item implements Equippable {
 
     }
 
+    @Override
+    public String getType() {
+        return "";
+    }
+
 }

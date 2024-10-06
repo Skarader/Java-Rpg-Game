@@ -2,7 +2,6 @@ package Items.Weapons;
 
 import Interfaces.MeleeWeapon;
 import Interfaces.RangedWeapon;
-import Items.Weapon;
 
 public class ThrowingKnife extends Weapon implements MeleeWeapon, RangedWeapon {
 

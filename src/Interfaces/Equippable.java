@@ -5,4 +5,6 @@ public interface Equippable {
 
     void unEquipItem();
 
+    String getType();
+
 }

@@ -1,7 +1,6 @@
 package Items.Weapons;
 
 import Interfaces.RangedWeapon;
-import Items.Weapon;
 
 public class FastBow extends Weapon implements RangedWeapon {
     // private int ammunition;

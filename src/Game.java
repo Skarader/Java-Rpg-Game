@@ -1,17 +1,18 @@
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
-import Items.Consumable;
-import Items.Weapon;
-import Items.Armor;
+import Items.Armors.Armor;
 import Items.Armors.BrassArmor;
 import Items.Armors.LeatherArmor;
 import Items.Armors.SteelArmor;
+import Items.Consumables.Consumable;
 import Items.Consumables.DefencePotion;
 import Items.Consumables.HealthPotion;
 import Items.Consumables.StrengthPotion;
 import Items.Weapons.BigSword;
 import Items.Weapons.FastBow;
 import Items.Weapons.ThrowingKnife;
+import Items.Weapons.Weapon;
 
 public class Game {
     Scanner scanner = new Scanner(System.in);
@@ -23,8 +24,8 @@ public class Game {
         System.out.println("Welcome to dragon hunter!");
         System.out.println("1. Start Game");
         System.out.println("0. Exit Game");
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // consume extra chars...
+        int choice = getIntInput();
+        scanner.nextLine(); // consume extra chars
 
         while (isRunning) {
             if (choice == 1) {
@@ -44,8 +45,8 @@ public class Game {
         System.out.println("First, please write your name?: ");
         String name = scanner.nextLine();
         System.out.println("How old are you?: ");
-        int age = scanner.nextInt();
-        scanner.nextLine();
+        int age = getIntInput();
+        scanner.nextLine(); // consume extra chars
         player.setName(name);
         player.setAge(age);
         clearScreen();
@@ -87,11 +88,9 @@ public class Game {
         System.out.println("2. Go to armor shop");
         System.out.println("3. Go to weapon shop");
         System.out.println("4. Go fight monsters");
-        System.err.println("5. Check inventory");
-        System.out.println("6. Check equipped items");
-        System.out.println("7. Manage inventory");
-        System.out.println("8. Manage equipped items");
-        int choice = scanner.nextInt();
+        System.out.println("5. Manage inventory");
+        System.out.println("6. Manage equipped items");
+        int choice = getIntInput();
         scanner.nextLine(); // consume extra chars
 
         switch (choice) {
@@ -108,20 +107,14 @@ public class Game {
                 // goFight();
                 break;
             case 5:
-                checkInventory();
-                break;
-            case 6:
-                checkEquippedInventory();
-                break;
-            case 7:
                 manageInventory();
                 break;
-            case 8:
+            case 6:
                 manageEquippedItems();
                 break;
             default:
                 clearScreen();
-                System.err.println("Invalid choice! Try again");
+                System.out.println("Invalid choice! Try again");
                 break;
         }
 
@@ -130,20 +123,22 @@ public class Game {
     public void potionShop() {
         clearScreen();
         System.out.println("Welcome to our potion shop!");
-        System.err.println("Enter the number of the item you would like to buy");
+        System.out.println("Your current balance is: " + player.getBalance());
+        System.out.println("\nEnter the number of the item you would like to buy");
+
         HealthPotion healthPotion = new HealthPotion("Health Potion", 1, 10, 50);
         DefencePotion defencePotion = new DefencePotion("Defence Potion", 1, 25, 5, 120);
         StrengthPotion strengthPotion = new StrengthPotion("Strength Potion", 1, 40, 5, 120);
 
         System.out.println("1. " + healthPotion.getName() + ". Price: " + healthPotion.getValue() + ", + "
-                + healthPotion.getPotency() + "Hp");
+                + healthPotion.getPotency() + " Hp");
         System.out.println("2. " + defencePotion.getName() + ". Price: " + defencePotion.getValue() + ", + "
                 + defencePotion.getPotency() + " Defence");
         System.out.println("3. " + strengthPotion.getName() + ". Price: " + strengthPotion.getValue() + ", + "
                 + strengthPotion.getPotency() + " Strength");
         System.out.println("0. Leave the store");
 
-        int choice = scanner.nextInt();
+        int choice = getIntInput();
         scanner.nextLine(); // consume extra chars
 
         Consumable itemChoice = null;
@@ -170,6 +165,7 @@ public class Game {
         if (player.getBalance() >= itemChoice.getValue()) {
             player.setBalance(player.getBalance() - itemChoice.getValue());
             System.out.println("You have bought a " + itemChoice.getName() + "!");
+            System.out.println("Your new balance is: " + player.getBalance());
             player.addItem(itemChoice);
             pressEnter();
             townCenter();
@@ -186,7 +182,8 @@ public class Game {
     public void armorShop() {
         clearScreen();
         System.out.println("Welcome to the armor shop!");
-        System.err.println("Enter the number of the item you would like to buy");
+        System.out.println("Your current balance is: " + player.getBalance());
+        System.out.println("\nEnter the number of the item you would like to buy");
 
         LeatherArmor leatherArmor = new LeatherArmor("Leather Armor", 20, 20, 5, 10);
         BrassArmor brassArmor = new BrassArmor("Brass Armor", 35, 35, 10, 10);
@@ -200,7 +197,7 @@ public class Game {
                 + steelArmor.getDamageDefence() + " Defence");
         System.out.println("0. Leave the store");
 
-        int choice = scanner.nextInt();
+        int choice = getIntInput();
         scanner.nextLine(); // consume extra chars
 
         Armor itemChoice = null;
@@ -227,6 +224,7 @@ public class Game {
         if (player.getBalance() >= itemChoice.getValue()) {
             player.setBalance(player.getBalance() - itemChoice.getValue());
             System.out.println("You have bought a " + itemChoice.getName() + "!");
+            System.out.println("Your new balance is: " + player.getBalance());
             player.addItem(itemChoice);
             pressEnter();
             townCenter();
@@ -243,21 +241,22 @@ public class Game {
     public void weaponShop() {
         clearScreen();
         System.out.println("Welcome to the weapon shop!");
-        System.err.println("Enter the number of the item you would like to buy");
+        System.out.println("Your current balance is: " + player.getBalance());
+        System.out.println("\nEnter the number of the item you would like to buy");
 
         ThrowingKnife throwingKnife = new ThrowingKnife("Throwing Knife", 10, 10, 5);
-        BigSword bigSword = new BigSword("Big Sword", 40, 40, 7);
         FastBow fastBow = new FastBow("Fast Bow", 25, 25, 7);
+        BigSword bigSword = new BigSword("Big Sword", 40, 40, 9);
 
         System.out.println("1. " + throwingKnife.getName() + ". Price: " + throwingKnife.getValue() + ", + "
                 + throwingKnife.getDamage() + " Damage");
-        System.out.println("2. " + bigSword.getName() + ". Price: " + bigSword.getValue() + ", + "
-                + bigSword.getDamage() + " Damage");
-        System.out.println("3. " + fastBow.getName() + ". Price: " + fastBow.getValue() + ", + "
+        System.out.println("2. " + fastBow.getName() + ". Price: " + fastBow.getValue() + ", + "
                 + fastBow.getDamage() + " Damage");
+        System.out.println("3. " + bigSword.getName() + ". Price: " + bigSword.getValue() + ", + "
+                + bigSword.getDamage() + " Damage");
         System.out.println("0. Leave the store");
 
-        int choice = scanner.nextInt();
+        int choice = getIntInput();
         scanner.nextLine(); // consume extra chars
 
         Weapon itemChoice = null;
@@ -267,10 +266,10 @@ public class Game {
                 itemChoice = throwingKnife;
                 break;
             case 2:
-                itemChoice = bigSword;
+                itemChoice = fastBow;
                 break;
             case 3:
-                itemChoice = fastBow;
+                itemChoice = bigSword;
                 break;
             case 0:
                 System.out.println("Leaving the store...");
@@ -283,6 +282,8 @@ public class Game {
 
         if (player.getBalance() >= itemChoice.getValue()) {
             player.setBalance(player.getBalance() - itemChoice.getValue());
+            System.out.println("You have bought a " + itemChoice.getName() + "!");
+            System.out.println("Your new balance is: " + player.getBalance());
             player.addItem(itemChoice);
             pressEnter();
             townCenter();
@@ -301,27 +302,42 @@ public class Game {
     }
 
     public void checkInventory() {
+        clearScreen();
         player.showInventory();
         pressEnter();
         townCenter();
     }
 
     public void checkEquippedInventory() {
+        clearScreen();
         player.showEquippedInventory();
         pressEnter();
         townCenter();
     }
 
     public void manageInventory() {
+        clearScreen();
         player.manageInventory();
         pressEnter();
         townCenter();
     }
 
     public void manageEquippedItems() {
+        clearScreen();
         player.manageEquippedInventory();
         pressEnter();
         townCenter();
+    }
+
+    public int getIntInput() {
+        while (true) {
+            try {
+                return scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input! Please enter a valid integer.");
+                scanner.nextLine(); // consume extra chars
+            }
+        }
     }
 
     public void pressEnter() {

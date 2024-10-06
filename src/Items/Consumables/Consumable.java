@@ -1,6 +1,7 @@
-package Items;
+package Items.Consumables;
 
 import Interfaces.Usable;
+import Items.Item;
 
 public abstract class Consumable extends Item implements Usable {
     private int potency;

@@ -1,6 +1,7 @@
-package Items;
+package Items.Weapons;
 
 import Interfaces.Equippable;
+import Items.Item;
 
 public abstract class Weapon extends Item implements Equippable {
     private int damage;
@@ -26,6 +27,11 @@ public abstract class Weapon extends Item implements Equippable {
 
     @Override
     public void unEquipItem() {
+    }
+
+    @Override
+    public String getType() {
+        return "Weapon";
     }
 
 }

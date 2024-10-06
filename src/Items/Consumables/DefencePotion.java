@@ -1,7 +1,5 @@
 package Items.Consumables;
 
-import Items.Consumable;
-
 public class DefencePotion extends Consumable {
     private double duration;
 

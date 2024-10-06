@@ -1,7 +1,6 @@
 package Items.Weapons;
 
 import Interfaces.MeleeWeapon;
-import Items.Weapon;
 
 public class BigSword extends Weapon implements MeleeWeapon {
 

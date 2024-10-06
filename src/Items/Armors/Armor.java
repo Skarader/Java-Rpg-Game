@@ -1,6 +1,7 @@
-package Items;
+package Items.Armors;
 
 import Interfaces.Equippable;
+import Items.Item;
 
 public abstract class Armor extends Item implements Equippable {
     private int damageDefence;
@@ -28,6 +29,11 @@ public abstract class Armor extends Item implements Equippable {
 
     @Override
     public void unEquipItem() {
+    }
+
+    @Override
+    public String getType() {
+        return "Armor";
     }
 
     public void repair() {

@@ -16,7 +16,7 @@ public class Player {
         this.strength = 2;
         this.cap = 50;
         this.balance = 0;
-        this.inventory = new Inventory();
+        this.inventory = new Inventory(this);
     }
 
     // GETTERS
@@ -74,6 +74,7 @@ public class Player {
     }
     // SETTERS
 
+    // METHODS
     public void addItem(Item item) {
         inventory.addItem(item);
     }
@@ -93,5 +94,6 @@ public class Player {
     public void manageEquippedInventory() {
         inventory.manageEquippedInventory();
     }
+    // METHODS
 
 }
