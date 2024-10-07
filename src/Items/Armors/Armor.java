@@ -18,8 +18,16 @@ public abstract class Armor extends Item implements Equippable {
         return damageDefence;
     }
 
-    public int getDurabillity() {
+    public int getDurability() {
         return durability;
+    }
+
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
+
+    public void setDamageDefence(int damageDefence) {
+        this.damageDefence = damageDefence;
     }
 
     @Override

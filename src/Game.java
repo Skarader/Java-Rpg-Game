@@ -1,6 +1,13 @@
 import java.util.Scanner;
 import java.util.InputMismatchException;
+import java.util.Random;
 
+import Enemies.Enemy;
+import Enemies.Fox;
+import Enemies.Rat;
+import Enemies.Snake;
+import Interfaces.MeleeWeapon;
+import Interfaces.RangedWeapon;
 import Items.Armors.Armor;
 import Items.Armors.BrassArmor;
 import Items.Armors.LeatherArmor;
@@ -73,8 +80,8 @@ public class Game {
                 "This time we have prepered for a brave knight like yourself to come and save us once and for all from the old dragon.");
         pressEnter();
         System.out.println("Look around and explore our village, you will find stuff that will help you progress!");
-        System.out.println("Here is 5 coins to start with! Use it well");
-        player.setBalance(player.getBalance() + 500);
+        System.out.println("Here is 50 coins to start with! Use it well");
+        player.setBalance(player.getBalance() + 50);
         System.out.println("Good luck " + player.getName() + "! You'll need it!");
         pressEnter();
         townCenter();
@@ -104,7 +111,7 @@ public class Game {
                 weaponShop();
                 break;
             case 4:
-                // goFight();
+                goFight();
                 break;
             case 5:
                 manageInventory();
@@ -127,8 +134,8 @@ public class Game {
         System.out.println("\nEnter the number of the item you would like to buy");
 
         HealthPotion healthPotion = new HealthPotion("Health Potion", 1, 10, 50);
-        DefencePotion defencePotion = new DefencePotion("Defence Potion", 1, 25, 5, 120);
-        StrengthPotion strengthPotion = new StrengthPotion("Strength Potion", 1, 40, 5, 120);
+        DefencePotion defencePotion = new DefencePotion("Defence Potion", 1, 25, 5, 5);
+        StrengthPotion strengthPotion = new StrengthPotion("Strength Potion", 1, 40, 5, 5);
 
         System.out.println("1. " + healthPotion.getName() + ". Price: " + healthPotion.getValue() + ", + "
                 + healthPotion.getPotency() + " Hp");
@@ -185,7 +192,7 @@ public class Game {
         System.out.println("Your current balance is: " + player.getBalance());
         System.out.println("\nEnter the number of the item you would like to buy");
 
-        LeatherArmor leatherArmor = new LeatherArmor("Leather Armor", 20, 20, 5, 10);
+        LeatherArmor leatherArmor = new LeatherArmor("Leather Armor", 20, 20, 5, 1);
         BrassArmor brassArmor = new BrassArmor("Brass Armor", 35, 35, 10, 10);
         SteelArmor steelArmor = new SteelArmor("Steel Armor", 50, 50, 25, 20);
 
@@ -299,6 +306,156 @@ public class Game {
     }
 
     public void goFight() {
+        clearScreen();
+        System.out.println("What do you wanna do?");
+        System.out.println("1. Find creatures causing havoc around the village");
+        System.out.println("2. Go to the mountain to fight the dragon");
+        System.out.println("3. Go back");
+        int choice = getIntInput();
+        scanner.nextLine(); // consume extra chars
+        switch (choice) {
+            case 1:
+                fightVillage();
+                break;
+            case 2:
+                // fightDragon();
+                break;
+            case 3:
+                townCenter();
+                break;
+
+            default:
+                System.out.println("Invalid input! please try again!");
+                break;
+        }
+
+    }
+
+    public void fightVillage() {
+        clearScreen();
+        Rat rat = new Rat("Possessed Rat", 15, 2);
+        Snake snake = new Snake("Possessed Snake", 20, 4);
+        Fox fox = new Fox("Possessed Fox", 30, 5);
+
+        Enemy currentEnemy = null;
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(3) + 1;
+
+        switch (randomNumber) {
+            case 1:
+                currentEnemy = rat;
+                break;
+            case 2:
+                currentEnemy = snake;
+                break;
+            case 3:
+                currentEnemy = fox;
+                break;
+            default:
+                break;
+        }
+
+        System.out.println("Searching around the village you come across a " + currentEnemy.getName() + ".");
+        System.out.println("What do you wanna do?");
+        System.out.println("1. Fight!");
+        System.out.println("2. Run away!");
+
+        int choice = getIntInput();
+        scanner.nextLine(); // consume extra chars
+
+        if (choice == 1) {
+            battle(currentEnemy);
+        } else {
+            System.out.println("You cowardly ran away from the " + currentEnemy.getName() + ".");
+            townCenter();
+        }
+
+    }
+
+    public void battle(Enemy enemy) {
+        clearScreen();
+        boolean fighting = true;
+
+        while (fighting) {
+            System.out.println("You current health: " + player.getHealth());
+            System.out.println(enemy.getName() + " current health: " + enemy.getHealth());
+
+            System.out.println("What's your action?");
+            System.out.println("1. Attack");
+            System.out.println("2. Flee");
+
+            int choice = getIntInput();
+            scanner.nextLine(); // consume extra chars
+
+            if (choice == 1) {
+
+                Weapon equippedWeapon = player.getEquippedWeapon();
+
+                if (equippedWeapon instanceof MeleeWeapon) {
+                    ((MeleeWeapon) equippedWeapon).meleeAttack();
+                } else if (equippedWeapon instanceof RangedWeapon) {
+                    ((RangedWeapon) equippedWeapon).rangedAttack();
+                }
+
+                int playerDamage = calcPlayerDamage(player);
+                enemy.takeDamage(playerDamage);
+
+                System.out.println("You dealt " + playerDamage + " damage to the " + enemy.getName() + ".");
+
+                if (enemy.getHealth() <= 0) {
+                    System.out.println("You defeated the " + enemy.getName() + ".");
+                    pressEnter();
+                    fighting = false;
+                    townCenter();
+                    break;
+                }
+
+                int enemyDamage = calcEnemyDamage(enemy);
+                player.takeDamage(enemyDamage);
+
+                System.out.println("The " + enemy.getName() + " dealt " + enemyDamage + " damage to you.\n");
+
+                if (player.getHealth() <= 0) {
+                    System.out.println("You were defeted by " + enemy.getName() + ".");
+                    pressEnter();
+                    // gameOver()
+                    fighting = false;
+                }
+            } else if (choice == 2) {
+                System.out.println("You cowardly ran away!");
+                pressEnter();
+                townCenter();
+                fighting = false;
+            } else {
+                System.out.println("Invalid choice! Try again!");
+            }
+        }
+    }
+
+    public int calcPlayerDamage(Player player) {
+
+        Weapon equippedWeapon = player.getEquippedWeapon();
+        int weaponDamage = equippedWeapon != null ? equippedWeapon.getDamage() : 0;
+
+        return player.getStrength() + weaponDamage;
+    }
+
+    public int calcEnemyDamage(Enemy enemy) {
+        int baseDamage = enemy.getStrength();
+
+        Armor equippedArmor = player.getEquippedArmor();
+        int defense = (equippedArmor != null) ? equippedArmor.getDamageDefence() : 0;
+        if (equippedArmor != null) {
+            equippedArmor.setDurability(equippedArmor.getDurability() - 1);
+
+            if (equippedArmor.getDurability() <= 0) {
+                System.out.println(equippedArmor.getName() + " is broken and not be usable anymore!");
+                equippedArmor.setDamageDefence(0);
+            }
+        }
+
+        return Math.max(0, baseDamage - defense);
     }
 
     public void checkInventory() {

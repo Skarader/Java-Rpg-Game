@@ -20,7 +20,7 @@ public abstract class Enemy {
         return health;
     }
 
-    public int strength() {
+    public int getStrength() {
         return strength;
     }
 
@@ -28,7 +28,10 @@ public abstract class Enemy {
         this.health = health;
     }
 
-    public void attack() {
-    };
+    public void takeDamage(int damage) {
+        setHealth(getHealth() - damage);
+    }
+
+    public abstract void attack();
 
 }

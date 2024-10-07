@@ -12,6 +12,7 @@ public class FastBow extends Weapon implements RangedWeapon {
 
     @Override
     public void rangedAttack() {
+        System.out.println("You shoot an arrow with the " + getName());
     }
 
     public void fastShotAttack() {

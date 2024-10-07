@@ -5,6 +5,8 @@ import java.util.Scanner;
 import Interfaces.Equippable;
 import Interfaces.Usable;
 import Items.Item;
+import Items.Armors.Armor;
+import Items.Weapons.Weapon;
 
 public class Inventory {
     private ArrayList<Item> items;
@@ -204,6 +206,24 @@ public class Inventory {
                 break;
         }
 
+    }
+
+    public Weapon getEquippedWeapon() {
+        for (Item item : equippedItems) {
+            if (item instanceof Weapon) {
+                return (Weapon) item;
+            }
+        }
+        return null;
+    }
+
+    public Armor getEquippedArmor() {
+        for (Item item : equippedItems) {
+            if (item instanceof Armor) {
+                return (Armor) item;
+            }
+        }
+        return null;
     }
 
     public int getIntInput() {

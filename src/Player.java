@@ -1,4 +1,6 @@
 import Items.Item;
+import Items.Weapons.Weapon;
+import Items.Armors.Armor;
 
 public class Player {
     private String name;
@@ -42,6 +44,10 @@ public class Player {
 
     public int getBalance() {
         return balance;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
     // GETTERS
@@ -93,6 +99,18 @@ public class Player {
 
     public void manageEquippedInventory() {
         inventory.manageEquippedInventory();
+    }
+
+    public Weapon getEquippedWeapon() {
+        return inventory.getEquippedWeapon();
+    }
+
+    public Armor getEquippedArmor() {
+        return inventory.getEquippedArmor();
+    }
+
+    public void takeDamage(int damage) {
+        setHealth(getHealth() - damage);
     }
     // METHODS
 
