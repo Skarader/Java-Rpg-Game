@@ -378,7 +378,7 @@ public class Game {
         boolean fighting = true;
 
         while (fighting) {
-            System.out.println("You current health: " + player.getHealth());
+            System.out.println("Your current health: " + player.getHealth());
             System.out.println(enemy.getName() + " current health: " + enemy.getHealth());
 
             System.out.println("What's your action?");
@@ -398,13 +398,14 @@ public class Game {
                     ((RangedWeapon) equippedWeapon).rangedAttack();
                 }
 
-                int playerDamage = calcPlayerDamage(player);
+                int playerDamage = calcPlayerDamage();
                 enemy.takeDamage(playerDamage);
 
                 System.out.println("You dealt " + playerDamage + " damage to the " + enemy.getName() + ".");
 
                 if (enemy.getHealth() <= 0) {
                     System.out.println("You defeated the " + enemy.getName() + ".");
+                    calcLoot(enemy, player);
                     pressEnter();
                     fighting = false;
                     townCenter();
@@ -433,7 +434,7 @@ public class Game {
         }
     }
 
-    public int calcPlayerDamage(Player player) {
+    public int calcPlayerDamage() {
 
         Weapon equippedWeapon = player.getEquippedWeapon();
         int weaponDamage = equippedWeapon != null ? equippedWeapon.getDamage() : 0;
@@ -456,6 +457,28 @@ public class Game {
         }
 
         return Math.max(0, baseDamage - defense);
+    }
+
+    public void calcLoot(Enemy enemy, Player player) {
+        Random random = new Random();
+        int luckyLoot = random.nextInt(1000);
+        if (luckyLoot == 23) {
+            player.setBalance(player.getBalance() + 100);
+            System.out.println("After defeating the " + enemy.getName() + " you found a large amount of money!"
+                    + " 100 coins has been added to your balance." + " New balance: " + player.getBalance());
+        }
+
+        int loot = random.nextInt(10);
+        if (loot >= 1) {
+            player.setBalance(player.getBalance() + loot);
+            System.out.println(
+                    "After defeating the " + enemy.getName() + " " + loot + " coins has been added to your balance."
+                            + " New balance: " + player.getBalance());
+        } else {
+
+            System.out.println("After defeating the " + enemy.getName() + " no loot was found! Current balance: "
+                    + player.getBalance());
+        }
     }
 
     public void checkInventory() {

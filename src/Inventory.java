@@ -36,7 +36,7 @@ public class Inventory {
 
     public void consumeItem(Item item) {
         items.remove(item);
-
+        System.out.println("You have consumed " + item.getName());
     }
 
     public void showInventory() {
@@ -126,8 +126,9 @@ public class Inventory {
         System.out.println("What do you wanna do with " + selectedItem.getName() + "?");
         System.out.println("1. Equip Item");
         System.out.println("2. Consume item");
-        System.out.println("3. Remove Item");
-        System.out.println("4. Cancel");
+        // System.out.println("3. Item info");
+        System.out.println("4. Remove Item");
+        System.out.println("5. Cancel");
 
         int choice2 = getIntInput();
         scanner.nextLine(); // consume extra chars
@@ -136,7 +137,6 @@ public class Inventory {
             case 1:
                 if (selectedItem instanceof Equippable) {
                     addEquippedItem(selectedItem);
-                    // items.remove(selectedItem);
                 } else {
                     System.out.println("This item cannot be equipped!");
                 }
@@ -144,16 +144,17 @@ public class Inventory {
             case 2:
                 if (selectedItem instanceof Usable) {
                     consumeItem(selectedItem);
-                    items.remove(selectedItem);
-                    System.out.println("You have consumed " + selectedItem.getName());
                 } else {
                     System.out.println("This item cannot be consumed!");
                 }
                 break;
             case 3:
-                removeItem(selectedItem);
+                // itemInfo(selectedItem);
                 break;
             case 4:
+                removeItem(selectedItem);
+                break;
+            case 5:
                 System.out.println("No changes made!");
                 break;
             default:
