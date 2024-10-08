@@ -2,13 +2,17 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import Interfaces.Equippable;
-import Interfaces.Usable;
 import Items.Item;
 import Items.Armors.Armor;
-import Items.Consumables.Consumable;
-import Items.Consumables.HealthPotion;
 import Items.Weapons.Weapon;
+
+import Items.Consumables.Consumable;
+import Items.Consumables.DefencePotion;
+import Items.Consumables.HealthPotion;
+import Items.Consumables.StrengthPotion;
+
+import Interfaces.Equippable;
+import Interfaces.Usable;
 
 public class Inventory {
     private ArrayList<Item> items;
@@ -45,15 +49,39 @@ public class Inventory {
                     "You have consumed " + item.getName() + " and restored " + healthPotion.getPotency() + " health!");
             System.out.println("Your current health is: " + player.getHealth());
         }
+        if (item instanceof StrengthPotion) {
+            StrengthPotion strengthPotion = (StrengthPotion) item;
+            int newStrength = player.getStrength() + strengthPotion.getPotency();
+            player.setStrength(newStrength);
+            System.out.println("You have consumed " + item.getName()
+                    + ". Your strength will be permenanlty be increased by " + strengthPotion.getPotency());
+            System.out.println("Your current strength is: " + player.getStrength());
+        }
+        if (item instanceof DefencePotion) {
+            DefencePotion defencePotion = (DefencePotion) item;
+            int newDefence = player.getDefence() + defencePotion.getPotency();
+            player.setDefence(newDefence);
+            System.out.println("You have consumed " + item.getName()
+                    + ". Your defence will be permenanlty be increased by " + defencePotion.getPotency());
+            System.out.println("Your current defence is: " + player.getDefence());
+        }
         items.remove(item);
     }
 
     public void showInventory() {
         if (items.isEmpty()) {
             System.out.println("Your current health is: " + player.getHealth());
+            System.out.println("Your current defence is: " + player.getDefence());
+            System.out.println("Your current strength is: " + player.getStrength());
             System.out.println("Your current balance is: " + player.getBalance());
+            System.out.println("***************************************************");
             System.out.println("Your inventory is empty!");
+            System.out.println("");
+            System.out.println("***************************************************");
         } else {
+            System.out.println("Your current health is: " + player.getHealth());
+            System.out.println("Your current defence is: " + player.getDefence());
+            System.out.println("Your current strength is: " + player.getStrength());
             System.out.println("Your current balance is: " + player.getBalance());
             System.out.println("This is the content of your inventory: ");
             System.out.println("***************************************************");
@@ -100,6 +128,7 @@ public class Inventory {
     public void unEquipItem(Item item) {
         equippedItems.remove(item);
         items.add(item);
+        ((Equippable) item).unEquipItem();
         System.out.println("You have unequipped " + item.getName());
     }
 
@@ -252,6 +281,15 @@ public class Inventory {
         for (Item item : equippedItems) {
             if (item instanceof Armor) {
                 return (Armor) item;
+            }
+        }
+        return null;
+    }
+
+    public HealthPotion findHealthPotionInInventory() {
+        for (Item item : items) {
+            if (item instanceof HealthPotion) {
+                return (HealthPotion) item;
             }
         }
         return null;

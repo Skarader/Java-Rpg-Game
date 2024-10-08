@@ -3,12 +3,10 @@ import java.util.InputMismatchException;
 import java.util.Random;
 
 import Enemies.Enemy;
-import Enemies.Fox;
 import Enemies.Rat;
 import Enemies.Snake;
-
-import Interfaces.MeleeWeapon;
-import Interfaces.RangedWeapon;
+import Enemies.Fox;
+import Enemies.Dragon;
 
 import Items.Armors.Armor;
 import Items.Armors.BrassArmor;
@@ -25,9 +23,12 @@ import Items.Weapons.BigSword;
 import Items.Weapons.FastBow;
 import Items.Weapons.ThrowingKnife;
 
+import Interfaces.MeleeWeapon;
+import Interfaces.RangedWeapon;
+
 public class Game {
     Scanner scanner = new Scanner(System.in);
-    Player player = new Player("null", 0, 100, 1, 2, 50, 0);
+    Player player = new Player("null", 0, 100, 0, 2, 50, 0);
 
     public void startGame() {
         boolean isRunning = true;
@@ -91,8 +92,8 @@ public class Game {
                 "This time we have prepered for a brave knight like yourself to come and save us once and for all from the old dragon.");
         pressEnter();
         System.out.println("Look around and explore our village, you will find stuff that will help you progress!");
-        System.out.println("Here is 50 coins to start with! Use it well");
-        player.setBalance(player.getBalance() + 50);
+        System.out.println("Here is 5 coins to start with! Use it well");
+        player.setBalance(player.getBalance() + 500);
         System.out.println("Good luck " + player.getName() + "! You'll need it!");
         pressEnter();
         townCenter();
@@ -142,9 +143,7 @@ public class Game {
                     manageEquippedItems();
                     break;
                 case 7:
-                    isRunning = false;
                     gameOver();
-                    break;
                 default:
                     clearScreen();
                     System.out.println("Invalid choice! Try again!\n");
@@ -159,9 +158,9 @@ public class Game {
         clearScreen();
         boolean isRunning = true;
 
-        HealthPotion healthPotion = new HealthPotion("Health Potion", 1, 10, 50);
-        DefencePotion defencePotion = new DefencePotion("Defence Potion", 1, 25, 5, 5);
-        StrengthPotion strengthPotion = new StrengthPotion("Strength Potion", 1, 40, 5, 5);
+        HealthPotion healthPotion = new HealthPotion("Health Potion", 1, 20, 50);
+        DefencePotion defencePotion = new DefencePotion("Defence Potion", 1, 80, 1);
+        StrengthPotion strengthPotion = new StrengthPotion("Strength Potion", 1, 120, 1);
 
         Consumable itemChoice = null;
 
@@ -173,10 +172,12 @@ public class Game {
 
             System.out.println("1. " + healthPotion.getName() + ". Price: " + healthPotion.getValue() + ", + "
                     + healthPotion.getPotency() + " Hp");
-            System.out.println("2. " + defencePotion.getName() + ". Price: " + defencePotion.getValue() + ", + "
-                    + defencePotion.getPotency() + " Defence");
-            System.out.println("3. " + strengthPotion.getName() + ". Price: " + strengthPotion.getValue() + ", + "
-                    + strengthPotion.getPotency() + " Strength");
+            System.out
+                    .println("2. " + defencePotion.getName() + ". Price: " + defencePotion.getValue() + ", Permanent + "
+                            + defencePotion.getPotency() + " Defence");
+            System.out.println(
+                    "3. " + strengthPotion.getName() + ". Price: " + strengthPotion.getValue() + ", Permanent + "
+                            + strengthPotion.getPotency() + " Strength");
             System.out.println("0. Leave the store");
 
             int choice = getIntInput();
@@ -390,7 +391,7 @@ public class Game {
                     break;
                 case 2:
                     isRunning = false;
-                    // fightDragon();
+                    fightDragon();
                     break;
                 case 3:
                     isRunning = false;
@@ -460,12 +461,168 @@ public class Game {
                     break;
             }
 
-            // }
-            // catch (Exception e) {
-            // System.out.println("Something unexpected happend: " + e.getMessage());
-            // }
         }
 
+    }
+
+    public void fightDragon() {
+        clearScreen();
+
+        Rat rat = new Rat("Demonic Possessed Rat", 25, 4);
+        Snake snake = new Snake("Demonic Possessed Snake", 30, 6);
+        Fox fox = new Fox("Demonic Possessed Fox", 40, 10);
+        Dragon dragon = new Dragon("Dragon", 500, 18);
+
+        System.out.println("Hey there " + player.getName() + " Its me again, Frank!");
+        System.out.println("I can se that you are leaving to fight the dragon.");
+        System.out.println("I just want to remind you to equip yourself with the best gear you can find!");
+        System.out.println("Once you leave here and enter the mountain, there is no turning back.");
+        System.out.println("So what will it be? Are you ready? (yes/no)");
+        String choice = scanner.nextLine().trim().toLowerCase();
+
+        if (choice.equals("yes")) {
+            System.out.println("Good luck " + player.getName() + " I hope I get to see you again");
+        } else {
+            System.out.println("Go back to town and make yourself ready then!");
+            pressEnter();
+            townCenter();
+        }
+
+        clearScreen();
+        System.out.println(
+                "While walking towards the mountain you wonder of you've done enough to prepere yourself for whats waiting...");
+        System.out.println(
+                "closeing in you see a large crack in the base of the mountain, you can see faints of smoke slowly simmer out from the crack...");
+        System.out.println(
+                "You take your first steps into the mountain and feel the heat go up for every step you take...");
+        pressEnter();
+
+        player.setHealth(player.getHealth() - 5);
+        System.out.println("Out of nowhere a " + rat.getName() + " jumps on you dealing 5 damage! Current health: "
+                + player.getHealth());
+
+        pressEnter();
+        battleDragon(rat);
+        clearScreen();
+
+        System.out
+                .println("Phew... After defeating the " + rat.getName() + " you shake yourself up and keep walking...");
+        System.out.println(
+                "Getting deeper into the mountain you think to yourself, that rat was alot stronger then other rats i've battled...");
+        pressEnter();
+        player.setHealth(player.getHealth() - 8);
+        System.out.println("Before you have time to think about anything else a " + snake.getName()
+                + " jumps on you dealing 8 damage! Current health: " + player.getHealth());
+
+        pressEnter();
+        battleDragon(snake);
+        clearScreen();
+
+        System.out.println("Wow.. that was one tough " + snake.getName());
+        System.out.println("Going even deeper into the mountain the heat is growing...");
+        System.out.println("You can here a rumbling deeper inside the mountain...");
+        System.out.println("The dragon must be close...");
+        pressEnter();
+        System.out.println(
+                "From the corner of your eye you see somthing running towards you. It's a " + fox.getName() + "!");
+        pressEnter();
+        battleDragon(fox);
+        clearScreen();
+
+        System.out.println("That " + fox.getName() + " was mean...");
+        System.out.println("With your body aching and you being covered in mud and dirt, the heat keeps raising...");
+        System.out.println(
+                "Almost wishing you never entered the village some time ago, but the temptation of being the hero is to strong");
+        pressEnter();
+        clearScreen();
+
+        System.out.println("The pathway inside the mountain opens up...");
+        System.out.println("You can see huge cave like room, gold and emerals is covering the entire cave...");
+        System.out.println("This must be it you pander... ");
+        System.out.println("This must be the lair of the dragon!");
+        pressEnter();
+        clearScreen();
+
+        System.out.println("You here a huge roar and a " + dragon.getName() + " flyes towards you spitting fire...");
+        System.out.println("You manage in the last second to throw yourself to the side, evading the fire...");
+        System.out.println("This is it! it's now or never...");
+        pressEnter();
+        battleDragon(dragon);
+        clearScreen();
+
+        gameWin();
+
+    }
+
+    public void battleDragon(Enemy enemy) {
+        clearScreen();
+        boolean fighting = true;
+
+        while (fighting) {
+            System.out.println("Your current health: " + player.getHealth());
+            System.out.println(enemy.getName() + " current health: " + enemy.getHealth());
+
+            System.out.println("What's your action?");
+            System.out.println("1. Attack");
+            System.out.println("2. Use Health Potion");
+
+            int choice = getIntInput();
+            scanner.nextLine(); // consume extra chars
+
+            if (choice == 1) {
+
+                Weapon equippedWeapon = player.getEquippedWeapon();
+
+                if (equippedWeapon instanceof MeleeWeapon) {
+                    ((MeleeWeapon) equippedWeapon).meleeAttack();
+                } else if (equippedWeapon instanceof RangedWeapon) {
+                    ((RangedWeapon) equippedWeapon).rangedAttack();
+                }
+
+                int playerDamage = calcPlayerDamage();
+                enemy.takeDamage(playerDamage);
+
+                System.out.println("\nYou dealt " + playerDamage + " damage to the " + enemy.getName() + ".");
+
+                if (enemy.getHealth() <= 0) {
+                    System.out.println("You defeated the " + enemy.getName() + ".");
+                    calcLoot(enemy, player);
+                    pressEnter();
+                    fighting = false;
+                    break;
+                }
+
+                int enemyDamage = calcEnemyDamage(enemy);
+                player.takeDamage(enemyDamage);
+
+                System.out.println("The " + enemy.getName() + " dealt " + enemyDamage + " damage to you.\n");
+
+                if (player.getHealth() <= 0) {
+                    System.out.println("\nYou were defeted by " + enemy.getName() + ".");
+                    pressEnter();
+                    gameOver();
+                    fighting = false;
+                }
+            } else if (choice == 2) {
+                Inventory inventory = player.getInventory();
+                HealthPotion potion = inventory.findHealthPotionInInventory();
+
+                if (potion != null) {
+                    int healing = potion.getPotency();
+                    player.setHealth(Math.min(player.getHealth() + healing, player.getMaxHealth()));
+
+                    System.out.println("\nYou used a health potion and restored " + healing + " health points.");
+                    player.getInventory().removeItem(potion);
+                    System.out.println(" ");
+                } else {
+                    System.out.println("\nYou don't have any health potions left!");
+                    System.out.println(" ");
+                }
+            } else {
+                clearScreen();
+                System.out.println("Invalid choice! Try again!\n");
+            }
+        }
     }
 
     public void battle(Enemy enemy) {
@@ -496,7 +653,7 @@ public class Game {
                 int playerDamage = calcPlayerDamage();
                 enemy.takeDamage(playerDamage);
 
-                System.out.println("You dealt " + playerDamage + " damage to the " + enemy.getName() + ".");
+                System.out.println("\nYou dealt " + playerDamage + " damage to the " + enemy.getName() + ".");
 
                 if (enemy.getHealth() <= 0) {
                     System.out.println("You defeated the " + enemy.getName() + ".");
@@ -515,11 +672,12 @@ public class Game {
                 if (player.getHealth() <= 0) {
                     System.out.println("You were defeted by " + enemy.getName() + ".");
                     pressEnter();
-                    // gameOver()
+                    gameOver();
                     fighting = false;
                 }
             } else if (choice == 2) {
                 System.out.println("You cowardly ran away!");
+                calcLossRisk(enemy);
                 pressEnter();
                 townCenter();
                 fighting = false;
@@ -577,6 +735,41 @@ public class Game {
         }
     }
 
+    public void calcLossRisk(Enemy enemy) {
+        Random random = new Random();
+
+        int chance = random.nextInt(10000) + 1;
+        int change2 = random.nextInt(10) + 1;
+        int chance3 = random.nextInt(100) + 1;
+
+        if (player.getHealth() <= 5) {
+            if (chance == 1337) {
+                System.out.println("Badly wounded you tried to run away from the " + enemy.getName() + " but the "
+                        + enemy.getName() + " caught up with and defeated you!");
+                gameOver();
+            }
+        }
+
+        if (player.getHealth() >= 11) {
+            if (change2 <= 3) {
+                player.setHealth(10);
+                System.out.println("While running away from the " + enemy.getName() + " you fell over and "
+                        + enemy.getName() + " manage to get a few more hits on you!");
+                System.out.println("Current health: " + player.getHealth());
+            }
+
+        }
+        if (player.getBalance() >= 1) {
+            if (chance3 <= 10) {
+                System.out.println("While running away you lost all your money");
+                player.setBalance(0);
+            } else {
+                System.out.println("You manage to get away without loosing any money");
+            }
+        }
+
+    }
+
     public void checkInventory() {
         clearScreen();
         player.showInventory();
@@ -607,6 +800,19 @@ public class Game {
 
     public void gameOver() {
         System.out.println("Good bye " + player.getName() + "! Hope to see you soon again!");
+        System.exit(0);
+    }
+
+    public void gameWin() {
+        System.out
+                .println("After killing the dragon you return to the village with the treasures from the dragon lair");
+        System.out.println("NO WAY!!! " + player.getName() + " DID IT!!!!");
+        pressEnter();
+
+        System.out.println(
+                "Thanks for playing this rpg battle game!\nCongratz on completing the game!\n until next time! Good Bye!");
+        System.out.println("Game created by 'MasterFlex3.5' ");
+        System.exit(0);
     }
 
     public int getIntInput() {
