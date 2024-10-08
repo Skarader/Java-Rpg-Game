@@ -98,14 +98,19 @@ public class Inventory {
             System.out.println("You don't have any items equipped!");
         } else {
             System.out.println("This is the content of your equipped items: ");
+            System.out.println("***************************************************");
             for (int i = 0; i < equippedItems.size(); i++) {
                 System.out.println((i + 1) + ". " + equippedItems.get(i).getName());
             }
+            System.out.println("");
+            System.out.println("***************************************************");
         }
     }
 
     public void manageInventory() {
         Game.clearScreen();
+        boolean isRunning = true;
+
         showInventory();
         if (items.isEmpty()) {
             return;
@@ -123,49 +128,57 @@ public class Inventory {
 
         Item selectedItem = items.get(choice - 1);
 
-        System.out.println("What do you wanna do with " + selectedItem.getName() + "?");
-        System.out.println("1. Equip Item");
-        System.out.println("2. Consume item");
-        // System.out.println("3. Item info");
-        System.out.println("4. Remove Item");
-        System.out.println("5. Cancel");
+        while (isRunning) {
+            System.out.println("What do you wanna do with " + selectedItem.getName() + "?");
+            System.out.println("1. Equip Item");
+            System.out.println("2. Consume item");
+            System.out.println("3. Remove Item");
+            System.out.println("4. Cancel");
 
-        int choice2 = getIntInput();
-        scanner.nextLine(); // consume extra chars
+            int choice2 = getIntInput();
+            scanner.nextLine(); // consume extra chars
 
-        switch (choice2) {
-            case 1:
-                if (selectedItem instanceof Equippable) {
-                    addEquippedItem(selectedItem);
-                } else {
-                    System.out.println("This item cannot be equipped!");
-                }
-                break;
-            case 2:
-                if (selectedItem instanceof Usable) {
-                    consumeItem(selectedItem);
-                } else {
-                    System.out.println("This item cannot be consumed!");
-                }
-                break;
-            case 3:
-                // itemInfo(selectedItem);
-                break;
-            case 4:
-                removeItem(selectedItem);
-                break;
-            case 5:
-                System.out.println("No changes made!");
-                break;
-            default:
-                System.out.println("Invalid choice! Try again!");
-                break;
+            switch (choice2) {
+                case 1:
+                    if (selectedItem instanceof Equippable) {
+                        isRunning = false;
+                        addEquippedItem(selectedItem);
+                    } else {
+                        Game.clearScreen();
+                        System.out.println("This item cannot be equipped!\n");
+                    }
+                    break;
+                case 2:
+                    if (selectedItem instanceof Usable) {
+                        isRunning = false;
+                        consumeItem(selectedItem);
+                    } else {
+                        Game.clearScreen();
+                        System.out.println("This item cannot be consumed!\n");
+                    }
+                    break;
+                case 3:
+                    isRunning = false;
+                    removeItem(selectedItem);
+                    break;
+                case 4:
+                    isRunning = false;
+                    Game.clearScreen();
+                    System.out.println("No changes made!\n");
+                    break;
+                default:
+                    Game.clearScreen();
+                    System.out.println("Invalid choice! Try again!\n");
+                    break;
+            }
         }
 
     }
 
     public void manageEquippedInventory() {
         Game.clearScreen();
+        boolean isRunning = true;
+
         showEquippedItems();
 
         if (equippedItems.isEmpty()) {
@@ -184,29 +197,36 @@ public class Inventory {
 
         Item selectedItem = equippedItems.get(choice - 1);
 
-        System.out.println("What do you wanna do with " + selectedItem.getName() + "?");
-        System.out.println("1. Unequip Item");
-        System.out.println("2. Cancel");
+        while (isRunning) {
 
-        int choice2 = getIntInput();
-        scanner.nextLine(); // consume extra chars
+            System.out.println("What do you wanna do with " + selectedItem.getName() + "?");
+            System.out.println("1. Unequip Item");
+            System.out.println("2. Cancel");
 
-        switch (choice2) {
-            case 1:
-                if (selectedItem instanceof Equippable) {
-                    unEquipItem(selectedItem);
-                } else {
-                    System.out.println("This item cannot be equipped!");
-                }
-                break;
-            case 2:
-                System.out.println("No changes made!");
-                break;
-            default:
-                System.out.println("Invalid choice! Try again!");
-                break;
+            int choice2 = getIntInput();
+            scanner.nextLine(); // consume extra chars
+
+            switch (choice2) {
+                case 1:
+                    if (selectedItem instanceof Equippable) {
+                        isRunning = false;
+                        unEquipItem(selectedItem);
+                    } else {
+                        Game.clearScreen();
+                        System.out.println("This item cannot be equipped!");
+                    }
+                    break;
+                case 2:
+                    isRunning = false;
+                    Game.clearScreen();
+                    System.out.println("No changes made!");
+                    break;
+                default:
+                    Game.clearScreen();
+                    System.out.println("Invalid choice! Try again!\n");
+                    break;
+            }
         }
-
     }
 
     public Weapon getEquippedWeapon() {

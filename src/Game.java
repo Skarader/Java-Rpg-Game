@@ -6,43 +6,54 @@ import Enemies.Enemy;
 import Enemies.Fox;
 import Enemies.Rat;
 import Enemies.Snake;
+
 import Interfaces.MeleeWeapon;
 import Interfaces.RangedWeapon;
+
 import Items.Armors.Armor;
 import Items.Armors.BrassArmor;
 import Items.Armors.LeatherArmor;
 import Items.Armors.SteelArmor;
+
 import Items.Consumables.Consumable;
 import Items.Consumables.DefencePotion;
 import Items.Consumables.HealthPotion;
 import Items.Consumables.StrengthPotion;
+
+import Items.Weapons.Weapon;
 import Items.Weapons.BigSword;
 import Items.Weapons.FastBow;
 import Items.Weapons.ThrowingKnife;
-import Items.Weapons.Weapon;
 
 public class Game {
     Scanner scanner = new Scanner(System.in);
-    boolean isRunning = true;
     Player player = new Player("null", 0, 100, 2, 50, 0);
 
     public void startGame() {
+        boolean isRunning = true;
         clearScreen();
-        System.out.println("Welcome to dragon hunter!");
-        System.out.println("1. Start Game");
-        System.out.println("0. Exit Game");
-        int choice = getIntInput();
-        scanner.nextLine(); // consume extra chars
 
         while (isRunning) {
+
+            System.out.println("Welcome to dragon hunter!");
+            System.out.println("1. Start Game");
+            System.out.println("0. Exit Game");
+            int choice = getIntInput();
+            scanner.nextLine(); // consume extra chars
+
             if (choice == 1) {
-                runGame();
                 isRunning = false;
-            } else {
+                runGame();
+            } else if (choice == 0) {
                 System.out.println("Good Bye");
                 isRunning = false;
+            } else {
+                clearScreen();
+                System.out.println("Invalid choice! Try again!\n");
             }
+
         }
+
     }
 
     public void runGame() {
@@ -88,251 +99,317 @@ public class Game {
     }
 
     public void townCenter() {
+        boolean isRunning = true;
         clearScreen();
-        System.out.println("You are standing in the middle of town! Where do you wanna go?");
 
-        System.out.println("1. Go to potions shop");
-        System.out.println("2. Go to armor shop");
-        System.out.println("3. Go to weapon shop");
-        System.out.println("4. Go fight monsters");
-        System.out.println("5. Manage inventory");
-        System.out.println("6. Manage equipped items");
-        int choice = getIntInput();
-        scanner.nextLine(); // consume extra chars
+        while (isRunning) {
 
-        switch (choice) {
-            case 1:
-                potionShop();
-                break;
-            case 2:
-                armorShop();
-                break;
-            case 3:
-                weaponShop();
-                break;
-            case 4:
-                goFight();
-                break;
-            case 5:
-                manageInventory();
-                break;
-            case 6:
-                manageEquippedItems();
-                break;
-            default:
-                clearScreen();
-                System.out.println("Invalid choice! Try again");
-                break;
+            System.out.println("You are standing in the middle of town! Where do you wanna go?");
+            System.out.println("1. Go to potions shop");
+            System.out.println("2. Go to armor shop");
+            System.out.println("3. Go to weapon shop");
+            System.out.println("4. Go fight monsters");
+            System.out.println("5. Manage inventory");
+            System.out.println("6. Manage equipped items");
+            System.out.println("7. Quit game");
+
+            int choice = getIntInput();
+            scanner.nextLine(); // consume extra chars
+
+            switch (choice) {
+                case 1:
+                    isRunning = false;
+                    potionShop();
+                    break;
+                case 2:
+                    isRunning = false;
+                    armorShop();
+                    break;
+                case 3:
+                    isRunning = false;
+                    weaponShop();
+                    break;
+                case 4:
+                    isRunning = false;
+                    goFight();
+                    break;
+                case 5:
+                    isRunning = false;
+                    manageInventory();
+                    break;
+                case 6:
+                    isRunning = false;
+                    manageEquippedItems();
+                    break;
+                case 7:
+                    isRunning = false;
+                    System.out.println("Good bye!");
+                    // gameOver();
+                    break;
+                default:
+                    clearScreen();
+                    System.out.println("Invalid choice! Try again!\n");
+                    break;
+            }
+
         }
 
     }
 
     public void potionShop() {
         clearScreen();
-        System.out.println("Welcome to our potion shop!");
-        System.out.println("Your current balance is: " + player.getBalance());
-        System.out.println("\nEnter the number of the item you would like to buy");
+        boolean isRunning = true;
 
         HealthPotion healthPotion = new HealthPotion("Health Potion", 1, 10, 50);
         DefencePotion defencePotion = new DefencePotion("Defence Potion", 1, 25, 5, 5);
         StrengthPotion strengthPotion = new StrengthPotion("Strength Potion", 1, 40, 5, 5);
 
-        System.out.println("1. " + healthPotion.getName() + ". Price: " + healthPotion.getValue() + ", + "
-                + healthPotion.getPotency() + " Hp");
-        System.out.println("2. " + defencePotion.getName() + ". Price: " + defencePotion.getValue() + ", + "
-                + defencePotion.getPotency() + " Defence");
-        System.out.println("3. " + strengthPotion.getName() + ". Price: " + strengthPotion.getValue() + ", + "
-                + strengthPotion.getPotency() + " Strength");
-        System.out.println("0. Leave the store");
-
-        int choice = getIntInput();
-        scanner.nextLine(); // consume extra chars
-
         Consumable itemChoice = null;
 
-        switch (choice) {
-            case 1:
-                itemChoice = healthPotion;
-                break;
-            case 2:
-                itemChoice = defencePotion;
-                break;
-            case 3:
-                itemChoice = strengthPotion;
-                break;
-            case 0:
-                System.out.println("Leaving store...");
-                pressEnter();
-                townCenter();
-            default:
-                System.out.println("Invalid choice! Try again!");
-                break;
-        }
+        while (isRunning) {
 
-        if (player.getBalance() >= itemChoice.getValue()) {
-            player.setBalance(player.getBalance() - itemChoice.getValue());
-            System.out.println("You have bought a " + itemChoice.getName() + "!");
-            System.out.println("Your new balance is: " + player.getBalance());
-            player.addItem(itemChoice);
-            pressEnter();
-            townCenter();
-        } else {
-            System.out
-                    .println("Your balance is to low! Your balance: " + player.getBalance() + " | "
-                            + itemChoice.getName()
-                            + " costs: " + itemChoice.getValue());
-            pressEnter();
-            townCenter();
+            System.out.println("Welcome to our potion shop!");
+            System.out.println("Your current balance is: " + player.getBalance());
+            System.out.println("\nEnter the number of the item you would like to buy");
+
+            System.out.println("1. " + healthPotion.getName() + ". Price: " + healthPotion.getValue() + ", + "
+                    + healthPotion.getPotency() + " Hp");
+            System.out.println("2. " + defencePotion.getName() + ". Price: " + defencePotion.getValue() + ", + "
+                    + defencePotion.getPotency() + " Defence");
+            System.out.println("3. " + strengthPotion.getName() + ". Price: " + strengthPotion.getValue() + ", + "
+                    + strengthPotion.getPotency() + " Strength");
+            System.out.println("0. Leave the store");
+
+            int choice = getIntInput();
+            scanner.nextLine(); // consume extra chars
+
+            switch (choice) {
+                case 1:
+                    isRunning = false;
+                    itemChoice = healthPotion;
+                    break;
+                case 2:
+                    isRunning = false;
+                    itemChoice = defencePotion;
+                    break;
+                case 3:
+                    isRunning = false;
+                    itemChoice = strengthPotion;
+                    break;
+                case 0:
+                    isRunning = false;
+                    System.out.println("Leaving store...");
+                    pressEnter();
+                    townCenter();
+                default:
+                    clearScreen();
+                    System.out.println("Invalid choice! Try again!\n");
+                    break;
+            }
+
+            if (itemChoice != null) {
+                if (player.getBalance() >= itemChoice.getValue()) {
+                    player.setBalance(player.getBalance() - itemChoice.getValue());
+                    System.out.println("You have bought a " + itemChoice.getName() + "!");
+                    System.out.println("Your new balance is: " + player.getBalance());
+                    player.addItem(itemChoice);
+                    pressEnter();
+                    townCenter();
+                } else {
+                    System.out
+                            .println("Your balance is to low! Your balance: " + player.getBalance() + " | "
+                                    + itemChoice.getName()
+                                    + " costs: " + itemChoice.getValue());
+                    pressEnter();
+                    townCenter();
+                }
+            }
+
         }
     }
 
     public void armorShop() {
         clearScreen();
-        System.out.println("Welcome to the armor shop!");
-        System.out.println("Your current balance is: " + player.getBalance());
-        System.out.println("\nEnter the number of the item you would like to buy");
+        boolean isRunning = true;
 
         LeatherArmor leatherArmor = new LeatherArmor("Leather Armor", 20, 20, 5, 1);
         BrassArmor brassArmor = new BrassArmor("Brass Armor", 35, 35, 10, 10);
         SteelArmor steelArmor = new SteelArmor("Steel Armor", 50, 50, 25, 20);
 
-        System.out.println("1. " + leatherArmor.getName() + ". Price: " + leatherArmor.getValue() + ", + "
-                + leatherArmor.getDamageDefence() + " Defence");
-        System.out.println("2. " + brassArmor.getName() + ". Price: " + brassArmor.getValue() + ", + "
-                + brassArmor.getDamageDefence() + " Defence");
-        System.out.println("3. " + steelArmor.getName() + ". Price: " + steelArmor.getValue() + ", + "
-                + steelArmor.getDamageDefence() + " Defence");
-        System.out.println("0. Leave the store");
-
-        int choice = getIntInput();
-        scanner.nextLine(); // consume extra chars
-
         Armor itemChoice = null;
 
-        switch (choice) {
-            case 1:
-                itemChoice = leatherArmor;
-                break;
-            case 2:
-                itemChoice = brassArmor;
-                break;
-            case 3:
-                itemChoice = steelArmor;
-                break;
-            case 0:
-                System.out.println("Leaving the store...");
-                pressEnter();
-                townCenter();
-            default:
-                System.out.println("Invalid choice! Try again!");
-                break;
-        }
+        while (isRunning) {
+            System.out.println("Welcome to the armor shop!");
+            System.out.println("Your current balance is: " + player.getBalance());
+            System.out.println("\nEnter the number of the item you would like to buy");
 
-        if (player.getBalance() >= itemChoice.getValue()) {
-            player.setBalance(player.getBalance() - itemChoice.getValue());
-            System.out.println("You have bought a " + itemChoice.getName() + "!");
-            System.out.println("Your new balance is: " + player.getBalance());
-            player.addItem(itemChoice);
-            pressEnter();
-            townCenter();
-        } else {
-            System.out
-                    .println("Your balance is to low! Your balance: " + player.getBalance() + " | "
-                            + itemChoice.getName()
-                            + " costs: " + itemChoice.getValue());
-            pressEnter();
-            townCenter();
+            System.out.println("1. " + leatherArmor.getName() + ". Price: " + leatherArmor.getValue() + ", + "
+                    + leatherArmor.getDamageDefence() + " Defence");
+            System.out.println("2. " + brassArmor.getName() + ". Price: " + brassArmor.getValue() + ", + "
+                    + brassArmor.getDamageDefence() + " Defence");
+            System.out.println("3. " + steelArmor.getName() + ". Price: " + steelArmor.getValue() + ", + "
+                    + steelArmor.getDamageDefence() + " Defence");
+            System.out.println("0. Leave the store");
+
+            int choice = getIntInput();
+            scanner.nextLine(); // consume extra chars
+
+            switch (choice) {
+                case 1:
+                    isRunning = false;
+                    itemChoice = leatherArmor;
+                    break;
+                case 2:
+                    isRunning = false;
+                    itemChoice = brassArmor;
+                    break;
+                case 3:
+                    isRunning = false;
+                    itemChoice = steelArmor;
+                    break;
+                case 0:
+                    isRunning = false;
+                    System.out.println("Leaving the store...");
+                    pressEnter();
+                    townCenter();
+                default:
+                    clearScreen();
+                    System.out.println("Invalid choice! Try again!\n");
+                    break;
+            }
+
+            if (itemChoice != null) {
+                if (player.getBalance() >= itemChoice.getValue()) {
+                    player.setBalance(player.getBalance() - itemChoice.getValue());
+                    System.out.println("You have bought a " + itemChoice.getName() + "!");
+                    System.out.println("Your new balance is: " + player.getBalance());
+                    player.addItem(itemChoice);
+                    pressEnter();
+                    townCenter();
+                } else {
+                    System.out
+                            .println("Your balance is to low! Your balance: " + player.getBalance() + " | "
+                                    + itemChoice.getName()
+                                    + " costs: " + itemChoice.getValue());
+                    pressEnter();
+                    townCenter();
+                }
+            }
+
         }
     }
 
     public void weaponShop() {
         clearScreen();
-        System.out.println("Welcome to the weapon shop!");
-        System.out.println("Your current balance is: " + player.getBalance());
-        System.out.println("\nEnter the number of the item you would like to buy");
+        boolean isRunning = true;
 
         ThrowingKnife throwingKnife = new ThrowingKnife("Throwing Knife", 10, 10, 5);
         FastBow fastBow = new FastBow("Fast Bow", 25, 25, 7);
         BigSword bigSword = new BigSword("Big Sword", 40, 40, 9);
 
-        System.out.println("1. " + throwingKnife.getName() + ". Price: " + throwingKnife.getValue() + ", + "
-                + throwingKnife.getDamage() + " Damage");
-        System.out.println("2. " + fastBow.getName() + ". Price: " + fastBow.getValue() + ", + "
-                + fastBow.getDamage() + " Damage");
-        System.out.println("3. " + bigSword.getName() + ". Price: " + bigSword.getValue() + ", + "
-                + bigSword.getDamage() + " Damage");
-        System.out.println("0. Leave the store");
-
-        int choice = getIntInput();
-        scanner.nextLine(); // consume extra chars
-
         Weapon itemChoice = null;
 
-        switch (choice) {
-            case 1:
-                itemChoice = throwingKnife;
-                break;
-            case 2:
-                itemChoice = fastBow;
-                break;
-            case 3:
-                itemChoice = bigSword;
-                break;
-            case 0:
-                System.out.println("Leaving the store...");
-                pressEnter();
-                townCenter();
-            default:
-                System.out.println("Invalid choice! Try again!");
-                break;
-        }
+        while (isRunning) {
 
-        if (player.getBalance() >= itemChoice.getValue()) {
-            player.setBalance(player.getBalance() - itemChoice.getValue());
-            System.out.println("You have bought a " + itemChoice.getName() + "!");
-            System.out.println("Your new balance is: " + player.getBalance());
-            player.addItem(itemChoice);
-            pressEnter();
-            townCenter();
-        } else {
-            System.out
-                    .println("Your balance is to low! Your balance: " + player.getBalance() + " | "
-                            + itemChoice.getName()
-                            + " costs: " + itemChoice.getValue());
-            pressEnter();
-            townCenter();
-        }
+            System.out.println("Welcome to the weapon shop!");
+            System.out.println("Your current balance is: " + player.getBalance());
+            System.out.println("\nEnter the number of the item you would like to buy");
 
+            System.out.println("1. " + throwingKnife.getName() + ". Price: " + throwingKnife.getValue() + ", + "
+                    + throwingKnife.getDamage() + " Damage");
+            System.out.println("2. " + fastBow.getName() + ". Price: " + fastBow.getValue() + ", + "
+                    + fastBow.getDamage() + " Damage");
+            System.out.println("3. " + bigSword.getName() + ". Price: " + bigSword.getValue() + ", + "
+                    + bigSword.getDamage() + " Damage");
+            System.out.println("0. Leave the store");
+
+            int choice = getIntInput();
+            scanner.nextLine(); // consume extra chars
+
+            switch (choice) {
+                case 1:
+                    isRunning = false;
+                    itemChoice = throwingKnife;
+                    break;
+                case 2:
+                    isRunning = false;
+                    itemChoice = fastBow;
+                    break;
+                case 3:
+                    isRunning = false;
+                    itemChoice = bigSword;
+                    break;
+                case 0:
+                    isRunning = false;
+                    System.out.println("Leaving the store...");
+                    pressEnter();
+                    townCenter();
+                default:
+                    clearScreen();
+                    System.out.println("Invalid choice! Try again!\n");
+                    break;
+            }
+
+            if (itemChoice != null) {
+                if (player.getBalance() >= itemChoice.getValue()) {
+                    player.setBalance(player.getBalance() - itemChoice.getValue());
+                    System.out.println("You have bought a " + itemChoice.getName() + "!");
+                    System.out.println("Your new balance is: " + player.getBalance());
+                    player.addItem(itemChoice);
+                    pressEnter();
+                    townCenter();
+                } else {
+                    System.out
+                            .println("Your balance is to low! Your balance: " + player.getBalance() + " | "
+                                    + itemChoice.getName()
+                                    + " costs: " + itemChoice.getValue());
+                    pressEnter();
+                    townCenter();
+                }
+            }
+
+        }
     }
 
     public void goFight() {
         clearScreen();
-        System.out.println("What do you wanna do?");
-        System.out.println("1. Find creatures causing havoc around the village");
-        System.out.println("2. Go to the mountain to fight the dragon");
-        System.out.println("3. Go back");
-        int choice = getIntInput();
-        scanner.nextLine(); // consume extra chars
-        switch (choice) {
-            case 1:
-                fightVillage();
-                break;
-            case 2:
-                // fightDragon();
-                break;
-            case 3:
-                townCenter();
-                break;
+        boolean isRunning = true;
 
-            default:
-                System.out.println("Invalid input! please try again!");
-                break;
+        while (isRunning) {
+
+            System.out.println("What do you wanna do?");
+            System.out.println("1. Find creatures causing havoc around the village");
+            System.out.println("2. Go to the mountain to fight the dragon");
+            System.out.println("3. Go back");
+            int choice = getIntInput();
+            scanner.nextLine(); // consume extra chars
+
+            switch (choice) {
+                case 1:
+                    isRunning = false;
+                    fightVillage();
+                    break;
+                case 2:
+                    isRunning = false;
+                    // fightDragon();
+                    break;
+                case 3:
+                    isRunning = false;
+                    townCenter();
+                    break;
+                default:
+                    clearScreen();
+                    System.out.println("Invalid input! Try again!\n");
+                    break;
+            }
+
         }
-
     }
 
     public void fightVillage() {
         clearScreen();
+        boolean isRunning = true;
+
         Rat rat = new Rat("Possessed Rat", 15, 2);
         Snake snake = new Snake("Possessed Snake", 20, 4);
         Fox fox = new Fox("Possessed Fox", 30, 5);
@@ -356,19 +433,38 @@ public class Game {
                 break;
         }
 
-        System.out.println("Searching around the village you come across a " + currentEnemy.getName() + ".");
-        System.out.println("What do you wanna do?");
-        System.out.println("1. Fight!");
-        System.out.println("2. Run away!");
+        while (isRunning) {
+            // try {
+            System.out.println("Searching around the village you come across a " + currentEnemy.getName() + ".");
+            System.out.println("What do you wanna do?");
+            System.out.println("1. Fight!");
+            System.out.println("2. Run away!");
 
-        int choice = getIntInput();
-        scanner.nextLine(); // consume extra chars
+            int choice = getIntInput();
+            scanner.nextLine(); // consume extra chars
 
-        if (choice == 1) {
-            battle(currentEnemy);
-        } else {
-            System.out.println("You cowardly ran away from the " + currentEnemy.getName() + ".");
-            townCenter();
+            switch (choice) {
+                case 1:
+                    isRunning = false;
+                    battle(currentEnemy);
+                    break;
+                case 2:
+                    isRunning = false;
+                    clearScreen();
+                    System.out.println("You cowardly ran away from the " + currentEnemy.getName() + ".");
+                    pressEnter();
+                    townCenter();
+                    break;
+                default:
+                    clearScreen();
+                    System.out.println("Invalid choice! Try again!\n");
+                    break;
+            }
+
+            // }
+            // catch (Exception e) {
+            // System.out.println("Something unexpected happend: " + e.getMessage());
+            // }
         }
 
     }
@@ -429,7 +525,8 @@ public class Game {
                 townCenter();
                 fighting = false;
             } else {
-                System.out.println("Invalid choice! Try again!");
+                clearScreen();
+                System.out.println("Invalid choice! Try again!\n");
             }
         }
     }
