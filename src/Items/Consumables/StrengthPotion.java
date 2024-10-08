@@ -1,15 +1,15 @@
 package Items.Consumables;
 
 public class StrengthPotion extends Consumable {
-    private double duration;
+    private int duration;
 
-    public StrengthPotion(String name, int weight, int value, int potency, double duration) {
+    public StrengthPotion(String name, int weight, int value, int potency, int duration) {
         super(name, weight, value, potency);
-        this.duration = 120;
+        this.duration = 5;
 
     }
 
-    public double getDuration() {
+    public int getDuration() {
         return duration;
     }
 

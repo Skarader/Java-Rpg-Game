@@ -6,6 +6,8 @@ import Interfaces.Equippable;
 import Interfaces.Usable;
 import Items.Item;
 import Items.Armors.Armor;
+import Items.Consumables.Consumable;
+import Items.Consumables.HealthPotion;
 import Items.Weapons.Weapon;
 
 public class Inventory {
@@ -35,12 +37,20 @@ public class Inventory {
     }
 
     public void consumeItem(Item item) {
+        if (item instanceof HealthPotion) {
+            HealthPotion healthPotion = (HealthPotion) item;
+            int newHealth = Math.min(player.getHealth() + healthPotion.getPotency(), player.getMaxHealth());
+            player.setHealth(newHealth);
+            System.out.println(
+                    "You have consumed " + item.getName() + " and restored " + healthPotion.getPotency() + " health!");
+            System.out.println("Your current health is: " + player.getHealth());
+        }
         items.remove(item);
-        System.out.println("You have consumed " + item.getName());
     }
 
     public void showInventory() {
         if (items.isEmpty()) {
+            System.out.println("Your current health is: " + player.getHealth());
             System.out.println("Your current balance is: " + player.getBalance());
             System.out.println("Your inventory is empty!");
         } else {

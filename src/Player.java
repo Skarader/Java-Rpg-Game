@@ -3,18 +3,22 @@ import Items.Weapons.Weapon;
 import Items.Armors.Armor;
 
 public class Player {
+    private int MAX_HEALTH = 100;
+
     private String name;
     private int age;
     private int health;
+    private int defence;
     private int strength;
     private int cap;
     private int balance;
     private Inventory inventory;
 
-    public Player(String name, int age, int health, int strength, int cap, int balance) {
+    public Player(String name, int age, int health, int defence, int strength, int cap, int balance) {
         this.name = name;
         this.age = age;
         this.health = 100;
+        this.defence = 0;
         this.strength = 2;
         this.cap = 50;
         this.balance = 0;
@@ -34,6 +38,10 @@ public class Player {
         return health;
     }
 
+    public int getDefence() {
+        return defence;
+    }
+
     public int getStrength() {
         return strength;
     }
@@ -44,6 +52,10 @@ public class Player {
 
     public int getBalance() {
         return balance;
+    }
+
+    public int getMaxHealth() {
+        return MAX_HEALTH;
     }
 
     public Inventory getInventory() {
@@ -65,6 +77,10 @@ public class Player {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public void setDefence(int defence) {
+        this.defence = defence;
     }
 
     public void setStrength(int strength) {

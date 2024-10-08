@@ -27,7 +27,7 @@ import Items.Weapons.ThrowingKnife;
 
 public class Game {
     Scanner scanner = new Scanner(System.in);
-    Player player = new Player("null", 0, 100, 2, 50, 0);
+    Player player = new Player("null", 0, 100, 1, 2, 50, 0);
 
     public void startGame() {
         boolean isRunning = true;
@@ -143,8 +143,7 @@ public class Game {
                     break;
                 case 7:
                     isRunning = false;
-                    System.out.println("Good bye!");
-                    // gameOver();
+                    gameOver();
                     break;
                 default:
                     clearScreen();
@@ -540,10 +539,10 @@ public class Game {
     }
 
     public int calcEnemyDamage(Enemy enemy) {
-        int baseDamage = enemy.getStrength();
+        int baseDamage = enemy.getStrength() - player.getDefence();
 
         Armor equippedArmor = player.getEquippedArmor();
-        int defense = (equippedArmor != null) ? equippedArmor.getDamageDefence() : 0;
+        int armorDefence = (equippedArmor != null) ? equippedArmor.getDamageDefence() : 0;
         if (equippedArmor != null) {
             equippedArmor.setDurability(equippedArmor.getDurability() - 1);
 
@@ -553,7 +552,7 @@ public class Game {
             }
         }
 
-        return Math.max(0, baseDamage - defense);
+        return Math.max(0, baseDamage - armorDefence);
     }
 
     public void calcLoot(Enemy enemy, Player player) {
@@ -604,6 +603,10 @@ public class Game {
         player.manageEquippedInventory();
         pressEnter();
         townCenter();
+    }
+
+    public void gameOver() {
+        System.out.println("Good bye " + player.getName() + "! Hope to see you soon again!");
     }
 
     public int getIntInput() {
