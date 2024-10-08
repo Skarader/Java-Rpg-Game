@@ -1,3 +1,6 @@
+package Player;
+
+import Inventory.Inventory;
 import Items.Item;
 import Items.Weapons.Weapon;
 import Items.Armors.Armor;

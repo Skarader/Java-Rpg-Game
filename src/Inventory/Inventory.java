@@ -1,11 +1,14 @@
+package Inventory;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import Game.Game;
 import Items.Item;
 import Items.Armors.Armor;
 import Items.Weapons.Weapon;
-
+import Player.Player;
 import Items.Consumables.Consumable;
 import Items.Consumables.DefencePotion;
 import Items.Consumables.HealthPotion;
@@ -41,31 +44,16 @@ public class Inventory {
     }
 
     public void consumeItem(Item item) {
-        if (item instanceof HealthPotion) {
-            HealthPotion healthPotion = (HealthPotion) item;
-            int newHealth = Math.min(player.getHealth() + healthPotion.getPotency(), player.getMaxHealth());
-            player.setHealth(newHealth);
-            System.out.println(
-                    "You have consumed " + item.getName() + " and restored " + healthPotion.getPotency() + " health!");
-            System.out.println("Your current health is: " + player.getHealth());
+
+        if (item instanceof Consumable) {
+            Consumable consumable = (Consumable) item;
+            Game.clearScreen();
+            consumable.useItem(player, consumable.getPotency(), item);
+            items.remove(item);
+
+        } else {
+            System.out.println("This item cannot be consumed.");
         }
-        if (item instanceof StrengthPotion) {
-            StrengthPotion strengthPotion = (StrengthPotion) item;
-            int newStrength = player.getStrength() + strengthPotion.getPotency();
-            player.setStrength(newStrength);
-            System.out.println("You have consumed " + item.getName()
-                    + ". Your strength will be permenanlty be increased by " + strengthPotion.getPotency());
-            System.out.println("Your current strength is: " + player.getStrength());
-        }
-        if (item instanceof DefencePotion) {
-            DefencePotion defencePotion = (DefencePotion) item;
-            int newDefence = player.getDefence() + defencePotion.getPotency();
-            player.setDefence(newDefence);
-            System.out.println("You have consumed " + item.getName()
-                    + ". Your defence will be permenanlty be increased by " + defencePotion.getPotency());
-            System.out.println("Your current defence is: " + player.getDefence());
-        }
-        items.remove(item);
     }
 
     public void showInventory() {

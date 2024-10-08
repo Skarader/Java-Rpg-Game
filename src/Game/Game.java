@@ -1,3 +1,5 @@
+package Game;
+
 import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -19,12 +21,14 @@ import Items.Consumables.HealthPotion;
 import Items.Consumables.StrengthPotion;
 
 import Items.Weapons.Weapon;
+import Player.Player;
 import Items.Weapons.BigSword;
 import Items.Weapons.FastBow;
 import Items.Weapons.ThrowingKnife;
 
 import Interfaces.MeleeWeapon;
 import Interfaces.RangedWeapon;
+import Inventory.Inventory;
 
 public class Game {
     Scanner scanner = new Scanner(System.in);
@@ -93,7 +97,7 @@ public class Game {
         pressEnter();
         System.out.println("Look around and explore our village, you will find stuff that will help you progress!");
         System.out.println("Here is 5 coins to start with! Use it well");
-        player.setBalance(player.getBalance() + 500);
+        player.setBalance(player.getBalance() + 5);
         System.out.println("Good luck " + player.getName() + "! You'll need it!");
         pressEnter();
         townCenter();
@@ -210,12 +214,14 @@ public class Game {
             if (itemChoice != null) {
                 if (player.getBalance() >= itemChoice.getValue()) {
                     player.setBalance(player.getBalance() - itemChoice.getValue());
-                    System.out.println("You have bought a " + itemChoice.getName() + "!");
+                    clearScreen();
+                    System.out.println("You have bought a " + itemChoice.getName() + "!\n");
                     System.out.println("Your new balance is: " + player.getBalance());
                     player.addItem(itemChoice);
                     pressEnter();
                     townCenter();
                 } else {
+                    clearScreen();
                     System.out
                             .println("Your balance is to low! Your balance: " + player.getBalance() + " | "
                                     + itemChoice.getName()
@@ -281,12 +287,14 @@ public class Game {
             if (itemChoice != null) {
                 if (player.getBalance() >= itemChoice.getValue()) {
                     player.setBalance(player.getBalance() - itemChoice.getValue());
+                    clearScreen();
                     System.out.println("You have bought a " + itemChoice.getName() + "!");
                     System.out.println("Your new balance is: " + player.getBalance());
                     player.addItem(itemChoice);
                     pressEnter();
                     townCenter();
                 } else {
+                    clearScreen();
                     System.out
                             .println("Your balance is to low! Your balance: " + player.getBalance() + " | "
                                     + itemChoice.getName()
@@ -353,12 +361,14 @@ public class Game {
             if (itemChoice != null) {
                 if (player.getBalance() >= itemChoice.getValue()) {
                     player.setBalance(player.getBalance() - itemChoice.getValue());
+                    clearScreen();
                     System.out.println("You have bought a " + itemChoice.getName() + "!");
                     System.out.println("Your new balance is: " + player.getBalance());
                     player.addItem(itemChoice);
                     pressEnter();
                     townCenter();
                 } else {
+                    clearScreen();
                     System.out
                             .println("Your balance is to low! Your balance: " + player.getBalance() + " | "
                                     + itemChoice.getName()

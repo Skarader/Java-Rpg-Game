@@ -16,8 +16,8 @@ public abstract class Consumable extends Item implements Usable {
         return potency;
     }
 
-    @Override
-    public void useItem() {
-    }
+    // @Override
+    // public void useItem() {
+    // }
 
 }
