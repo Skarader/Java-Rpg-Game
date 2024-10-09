@@ -10,9 +10,7 @@ import Items.Armors.Armor;
 import Items.Weapons.Weapon;
 import Player.Player;
 import Items.Consumables.Consumable;
-import Items.Consumables.DefencePotion;
 import Items.Consumables.HealthPotion;
-import Items.Consumables.StrengthPotion;
 
 import Interfaces.Equippable;
 import Interfaces.Usable;
