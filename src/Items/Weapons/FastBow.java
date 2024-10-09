@@ -16,6 +16,8 @@ public class FastBow extends Weapon implements RangedWeapon {
     }
 
     public void fastShotAttack() {
+        System.out.println(
+                "You shoot an arrow at higher speed then usual with the " + getName() + ", dealing double damage");
     }
 
 }

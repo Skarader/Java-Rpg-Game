@@ -14,6 +14,6 @@ public class BigSword extends Weapon implements MeleeWeapon {
     }
 
     public void bigSwingAttack() {
-        System.out.println("You swing the " + getName() + " with more force than usual dealing double damage");
+        System.out.println("You swing the " + getName() + " with more force than usual, dealing double damage");
     }
 }

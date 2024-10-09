@@ -96,8 +96,8 @@ public class Game {
                 "This time we have prepered for a brave knight like yourself to come and save us once and for all from the old dragon.");
         pressEnter();
         System.out.println("Look around and explore our village, you will find stuff that will help you progress!");
-        System.out.println("Here is 5 coins to start with! Use it well");
-        player.setBalance(player.getBalance() + 5);
+        System.out.println("Here is 10 coins to start with! Use it well");
+        player.setBalance(player.getBalance() + 10);
         System.out.println("Good luck " + player.getName() + "! You'll need it!");
         pressEnter();
         townCenter();
@@ -564,6 +564,91 @@ public class Game {
 
     }
 
+    public void battle(Enemy enemy) {
+        clearScreen();
+        boolean fighting = true;
+
+        while (fighting) {
+            System.out.println("Your current health: " + player.getHealth());
+            System.out.println(enemy.getName() + " current health: " + enemy.getHealth());
+
+            System.out.println("\nWhat's your action?");
+            System.out.println("1. Attack");
+            System.out.println("2. Flee");
+
+            int choice = getIntInput();
+            scanner.nextLine(); // consume extra chars
+
+            if (choice == 1) {
+
+                Random random = new Random();
+                int lyckeyStrike = random.nextInt(50) + 1;
+
+                Weapon equippedWeapon = player.getEquippedWeapon();
+
+                if (equippedWeapon instanceof MeleeWeapon) {
+                    if (lyckeyStrike <= 1) {
+                        ((MeleeWeapon) equippedWeapon).bigSwingAttack();
+                    } else {
+                        ((MeleeWeapon) equippedWeapon).meleeAttack();
+                    }
+                } else if (equippedWeapon instanceof RangedWeapon) {
+                    if (lyckeyStrike <= 1) {
+                        ((RangedWeapon) equippedWeapon).fastShotAttack();
+                    } else {
+                        ((RangedWeapon) equippedWeapon).rangedAttack();
+                    }
+                }
+
+                int playerDamage = calcPlayerDamage();
+                int doublePlayerDamage = playerDamage * 2;
+
+                if (lyckeyStrike <= 1) {
+                    enemy.takeDamage(doublePlayerDamage);
+                } else {
+                    enemy.takeDamage(playerDamage);
+                }
+
+                if (lyckeyStrike <= 1) {
+                    System.out.println("\nYou dealt " + doublePlayerDamage + " damage to the " + enemy.getName() + ".");
+                } else {
+                    System.out.println("\nYou dealt " + playerDamage + " damage to the " + enemy.getName() + ".");
+
+                }
+
+                if (enemy.getHealth() <= 0) {
+                    System.out.println("You defeated the " + enemy.getName() + ".");
+                    calcLoot(enemy, player);
+                    pressEnter();
+                    fighting = false;
+                    townCenter();
+                    break;
+                }
+
+                int enemyDamage = calcEnemyDamage(enemy);
+                player.takeDamage(enemyDamage);
+
+                System.out.println("The " + enemy.getName() + " dealt " + enemyDamage + " damage to you.\n");
+
+                if (player.getHealth() <= 0) {
+                    System.out.println("You were defeted by " + enemy.getName() + ".");
+                    pressEnter();
+                    gameOver();
+                    fighting = false;
+                }
+            } else if (choice == 2) {
+                System.out.println("You cowardly ran away!");
+                calcLossRisk(enemy);
+                pressEnter();
+                townCenter();
+                fighting = false;
+            } else {
+                clearScreen();
+                System.out.println("Invalid choice! Try again!\n");
+            }
+        }
+    }
+
     public void battleDragon(Enemy enemy) {
         clearScreen();
         boolean fighting = true;
@@ -581,18 +666,40 @@ public class Game {
 
             if (choice == 1) {
 
+                Random random = new Random();
+                int lyckeyStrike = random.nextInt(100) + 1;
+
                 Weapon equippedWeapon = player.getEquippedWeapon();
 
                 if (equippedWeapon instanceof MeleeWeapon) {
-                    ((MeleeWeapon) equippedWeapon).meleeAttack();
+                    if (lyckeyStrike <= 1) {
+                        ((MeleeWeapon) equippedWeapon).bigSwingAttack();
+                    } else {
+                        ((MeleeWeapon) equippedWeapon).meleeAttack();
+                    }
                 } else if (equippedWeapon instanceof RangedWeapon) {
-                    ((RangedWeapon) equippedWeapon).rangedAttack();
+                    if (lyckeyStrike <= 1) {
+                        ((RangedWeapon) equippedWeapon).fastShotAttack();
+                    } else {
+                        ((RangedWeapon) equippedWeapon).rangedAttack();
+                    }
                 }
 
                 int playerDamage = calcPlayerDamage();
-                enemy.takeDamage(playerDamage);
+                int doublePlayerDamage = playerDamage * 2;
 
-                System.out.println("\nYou dealt " + playerDamage + " damage to the " + enemy.getName() + ".");
+                if (lyckeyStrike <= 1) {
+                    enemy.takeDamage(doublePlayerDamage);
+                } else {
+                    enemy.takeDamage(playerDamage);
+                }
+
+                if (lyckeyStrike <= 1) {
+                    System.out.println("\nYou dealt " + doublePlayerDamage + " damage to the " + enemy.getName() + ".");
+                } else {
+                    System.out.println("\nYou dealt " + playerDamage + " damage to the " + enemy.getName() + ".");
+
+                }
 
                 if (enemy.getHealth() <= 0) {
                     System.out.println("You defeated the " + enemy.getName() + ".");
@@ -628,69 +735,6 @@ public class Game {
                     System.out.println("\nYou don't have any health potions left!");
                     System.out.println(" ");
                 }
-            } else {
-                clearScreen();
-                System.out.println("Invalid choice! Try again!\n");
-            }
-        }
-    }
-
-    public void battle(Enemy enemy) {
-        clearScreen();
-        boolean fighting = true;
-
-        while (fighting) {
-            System.out.println("Your current health: " + player.getHealth());
-            System.out.println(enemy.getName() + " current health: " + enemy.getHealth());
-
-            System.out.println("\nWhat's your action?");
-            System.out.println("1. Attack");
-            System.out.println("2. Flee");
-
-            int choice = getIntInput();
-            scanner.nextLine(); // consume extra chars
-
-            if (choice == 1) {
-
-                Weapon equippedWeapon = player.getEquippedWeapon();
-
-                if (equippedWeapon instanceof MeleeWeapon) {
-                    ((MeleeWeapon) equippedWeapon).meleeAttack();
-                } else if (equippedWeapon instanceof RangedWeapon) {
-                    ((RangedWeapon) equippedWeapon).rangedAttack();
-                }
-
-                int playerDamage = calcPlayerDamage();
-                enemy.takeDamage(playerDamage);
-
-                System.out.println("\nYou dealt " + playerDamage + " damage to the " + enemy.getName() + ".");
-
-                if (enemy.getHealth() <= 0) {
-                    System.out.println("You defeated the " + enemy.getName() + ".");
-                    calcLoot(enemy, player);
-                    pressEnter();
-                    fighting = false;
-                    townCenter();
-                    break;
-                }
-
-                int enemyDamage = calcEnemyDamage(enemy);
-                player.takeDamage(enemyDamage);
-
-                System.out.println("The " + enemy.getName() + " dealt " + enemyDamage + " damage to you.\n");
-
-                if (player.getHealth() <= 0) {
-                    System.out.println("You were defeted by " + enemy.getName() + ".");
-                    pressEnter();
-                    gameOver();
-                    fighting = false;
-                }
-            } else if (choice == 2) {
-                System.out.println("You cowardly ran away!");
-                calcLossRisk(enemy);
-                pressEnter();
-                townCenter();
-                fighting = false;
             } else {
                 clearScreen();
                 System.out.println("Invalid choice! Try again!\n");

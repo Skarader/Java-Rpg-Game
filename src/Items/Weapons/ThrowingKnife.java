@@ -14,7 +14,8 @@ public class ThrowingKnife extends Weapon implements RangedWeapon {
     }
 
     public void fastShotAttack() {
-        System.out.println();
+        System.out.println(
+                "You throw an knife at higher speed then usual with the " + getName() + ", dealing double damage");
     }
 
 }
