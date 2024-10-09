@@ -61,23 +61,22 @@ public class Inventory {
             System.out.println("Your current health is: " + player.getHealth());
             System.out.println("Your current defence is: " + player.getDefence());
             System.out.println("Your current strength is: " + player.getStrength());
-            System.out.println("Your current balance is: " + player.getBalance());
+            System.out.println("Your current balance is: " + player.getBalance() + "\n");
+            System.out.println("This is the content of your inventory: ");
             System.out.println("***************************************************");
-            System.out.println("Your inventory is empty!");
-            System.out.println("");
+            System.out.println("Your inventory is empty!\n");
             System.out.println("***************************************************");
         } else {
             System.out.println("Your current health is: " + player.getHealth());
             System.out.println("Your current defence is: " + player.getDefence());
             System.out.println("Your current strength is: " + player.getStrength());
-            System.out.println("Your current balance is: " + player.getBalance());
+            System.out.println("Your current balance is: " + player.getBalance() + "\n");
             System.out.println("This is the content of your inventory: ");
             System.out.println("***************************************************");
             for (int i = 0; i < items.size(); i++) {
                 System.out.println((i + 1) + ". " + items.get(i).getName());
             }
-            System.out.println("");
-            System.out.println("***************************************************");
+            System.out.println("\n***************************************************");
         }
     }
 
@@ -155,12 +154,13 @@ public class Inventory {
 
         Item selectedItem = items.get(choice - 1);
 
+        Game.clearScreen();
         while (isRunning) {
             System.out.println("What do you wanna do with " + selectedItem.getName() + "?");
             System.out.println("1. Equip Item");
             System.out.println("2. Consume item");
             System.out.println("3. Remove Item");
-            System.out.println("4. Cancel");
+            System.out.println("0. Cancel");
 
             int choice2 = getIntInput();
             scanner.nextLine(); // consume extra chars
@@ -188,7 +188,7 @@ public class Inventory {
                     isRunning = false;
                     removeItem(selectedItem);
                     break;
-                case 4:
+                case 0:
                     isRunning = false;
                     Game.clearScreen();
                     System.out.println("No changes made!\n");
@@ -228,7 +228,7 @@ public class Inventory {
 
             System.out.println("What do you wanna do with " + selectedItem.getName() + "?");
             System.out.println("1. Unequip Item");
-            System.out.println("2. Cancel");
+            System.out.println("0. Cancel");
 
             int choice2 = getIntInput();
             scanner.nextLine(); // consume extra chars
@@ -243,7 +243,7 @@ public class Inventory {
                         System.out.println("This item cannot be equipped!");
                     }
                     break;
-                case 2:
+                case 0:
                     isRunning = false;
                     Game.clearScreen();
                     System.out.println("No changes made!");

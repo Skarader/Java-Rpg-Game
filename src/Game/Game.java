@@ -238,9 +238,9 @@ public class Game {
         clearScreen();
         boolean isRunning = true;
 
-        LeatherArmor leatherArmor = new LeatherArmor("Leather Armor", 20, 20, 5, 1);
-        BrassArmor brassArmor = new BrassArmor("Brass Armor", 35, 35, 10, 10);
-        SteelArmor steelArmor = new SteelArmor("Steel Armor", 50, 50, 25, 20);
+        LeatherArmor leatherArmor = new LeatherArmor("Leather Armor", 20, 20, 5, 5);
+        BrassArmor brassArmor = new BrassArmor("Brass Armor", 35, 65, 10, 10);
+        SteelArmor steelArmor = new SteelArmor("Steel Armor", 50, 150, 25, 20);
 
         Armor itemChoice = null;
 
@@ -390,7 +390,7 @@ public class Game {
             System.out.println("What do you wanna do?");
             System.out.println("1. Find creatures causing havoc around the village");
             System.out.println("2. Go to the mountain to fight the dragon");
-            System.out.println("3. Go back");
+            System.out.println("0. Go back");
             int choice = getIntInput();
             scanner.nextLine(); // consume extra chars
 
@@ -403,7 +403,7 @@ public class Game {
                     isRunning = false;
                     fightDragon();
                     break;
-                case 3:
+                case 0:
                     isRunning = false;
                     townCenter();
                     break;
@@ -448,7 +448,7 @@ public class Game {
             System.out.println("Searching around the village you come across a " + currentEnemy.getName() + ".");
             System.out.println("What do you wanna do?");
             System.out.println("1. Fight!");
-            System.out.println("2. Run away!");
+            System.out.println("0. Run away!");
 
             int choice = getIntInput();
             scanner.nextLine(); // consume extra chars
@@ -458,7 +458,7 @@ public class Game {
                     isRunning = false;
                     battle(currentEnemy);
                     break;
-                case 2:
+                case 0:
                     isRunning = false;
                     clearScreen();
                     System.out.println("You cowardly ran away from the " + currentEnemy.getName() + ".");
@@ -643,7 +643,7 @@ public class Game {
             System.out.println("Your current health: " + player.getHealth());
             System.out.println(enemy.getName() + " current health: " + enemy.getHealth());
 
-            System.out.println("What's your action?");
+            System.out.println("\nWhat's your action?");
             System.out.println("1. Attack");
             System.out.println("2. Flee");
 
@@ -725,14 +725,15 @@ public class Game {
 
     public void calcLoot(Enemy enemy, Player player) {
         Random random = new Random();
-        int luckyLoot = random.nextInt(1000);
+        int luckyLoot = random.nextInt(1000) + 1;
         if (luckyLoot == 23) {
             player.setBalance(player.getBalance() + 100);
             System.out.println("After defeating the " + enemy.getName() + " you found a large amount of money!"
                     + " 100 coins has been added to your balance." + " New balance: " + player.getBalance());
+            return;
         }
 
-        int loot = random.nextInt(10);
+        int loot = random.nextInt(10) + 1;
         if (loot >= 1) {
             player.setBalance(player.getBalance() + loot);
             System.out.println(

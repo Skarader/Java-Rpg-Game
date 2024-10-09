@@ -12,7 +12,7 @@ public class StrengthPotion extends Consumable {
 
     public void useItem(Player player, int potency, Item item) {
         player.setStrength(player.getStrength() + potency);
-        System.out.println("You consumed a " + item.getName() + " and gained " + potency + " permanent strength");
+        System.out.println("You consumed a " + item.getName() + " and gained " + potency + " permanent strength!");
         System.out.println("Your current strength: " + player.getStrength());
     }
 

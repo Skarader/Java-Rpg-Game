@@ -13,7 +13,7 @@ public class DefencePotion extends Consumable {
     @Override
     public void useItem(Player player, int potency, Item item) {
         player.setDefence(player.getDefence() + potency);
-        System.out.println("You consumed a " + item.getName() + " and gained " + potency + " permanent defence");
+        System.out.println("You consumed a " + item.getName() + " and gained " + potency + " permanent defence!");
         System.out.println("Your current defence: " + player.getDefence());
     }
 

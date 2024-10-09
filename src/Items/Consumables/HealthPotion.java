@@ -12,7 +12,7 @@ public class HealthPotion extends Consumable {
 
     public void useItem(Player player, int potency, Item item) {
         player.setHealth(Math.min(player.getHealth() + potency, player.getMaxHealth()));
-        System.out.println("You consumed a " + item.getName() + " and restored " + potency + " health!!");
+        System.out.println("You consumed a " + item.getName() + " and restored " + potency + " health!");
         System.out.println("Your current health: " + player.getHealth());
     }
 }
